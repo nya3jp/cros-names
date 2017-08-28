@@ -68,13 +68,15 @@
 
         {% for device in devices %}
         <div class="device col-md-6" data-text="{{ device['Code name'] }}@{{ device['OEM'] }}@{{ device['Model'] }}" id="{{ device['Code name'] }}">
-          <h3><a href="#{{ device['Code name'] }}" class="title-link">{{ device['Code name'] }} <small>{{ device['Model'] or device['OEM'] }}</small></h3>
+          <h3><a href="#{{ device['Code name'] }}" class="title-link">{{ device['Code name'] }} <small>{{ device['Model'] or device['OEM'] }}</small></a></h3>
           <div class="row">
             <div class="col-sm-6 thumbnail-container">
               <div class="thumbnail product-image">
-                {% if device['Image Available'] and device['ASIN'] %}
-                <a target="_blank" href="https://www.amazon.com/gp/product/{{ device['ASIN'] }}/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN={{ device['ASIN'] }}&linkCode=as2&tag=minnie010-20&linkId=c84223ad6eda87f148de739316556341"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN={{ device['ASIN'] }}&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=minnie010-20" ></a>
-                <img src="//ir-na.amazon-adsystem.com/e/ir?t=minnie010-20&l=am2&o=1&a={{ device['ASIN'] }}" style="position: absolute">
+                {% if device['Thumbnail'].startswith('amazon.com:') %}
+                <a target="_blank" href="https://www.amazon.com/gp/product/{{ device['Thumbnail'].split(':', 1)[1] }}/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN={{ device['Thumbnail'].split(':', 1)[1] }}&linkCode=as2&tag=minnie010-20&linkId=c84223ad6eda87f148de739316556341"><img src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN={{ device['Thumbnail'].split(':', 1)[1] }}&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=minnie010-20" ></a>
+                <img src="//ir-na.amazon-adsystem.com/e/ir?t=minnie010-20&l=am2&o=1&a={{ device['Thumbnail'].split(':', 1)[1] }}" style="position: absolute">
+                {% elif device['Thumbnail'].startswith('generic:') %}
+                <a target="_blank" href="{{ device['Thumbnail'].split(':', 1)[1].split(',', 1)[1] }}"><img src="{{ device['Thumbnail'].split(':', 1)[1].split(',', 1)[0] }}"></a>
                 {% else %}
                 <div class="placeholder">
                   Photo Unavailable
