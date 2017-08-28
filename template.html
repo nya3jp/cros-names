@@ -72,8 +72,8 @@
       <div class="row">
 
         {% for device in devices %}
-        <div class="device col-md-6" data-text="{{ device['Code name'] }}@{{ device['OEM'] }}@{{ device['Model'] }}" id="{{ device['Code name'] }}">
-          <h3><a href="#{{ device['Code name'] }}" class="title-link">{{ device['Code name'] }} <small>{{ device['Model'] or device['OEM'] }}</small></a></h3>
+        <div class="device col-md-6" data-text="{{ device['Code name'] }}@{{ device['OEM'] }}@{{ device['Model'] }}" id="{{ device['Code name'].split()[0].lower() }}">
+          <h3><a href="#{{ device['Code name'].split()[0].lower() }}" class="title-link">{{ device['Code name'] }} <small>{{ device['Model'] or device['OEM'] }}</small></a></h3>
           <div class="row">
             <div class="col-sm-6 thumbnail-container">
               <div class="thumbnail product-image">
