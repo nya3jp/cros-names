@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chrome OS Code Names</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+      .device a.title-link {
+        color: inherit;
+        text-decoration: none;
+      }
+      .thumbnail-container {
+        height: 180px;
+      }
+      .thumbnail {
+        text-align: center;
+      }
+      .thumbnail .placeholder {
+        display: inline-block;
+        width: 160px;
+        height: 140px;
+        background-color: #f0f0f0;
+        line-height: 140px;
+        text-align: center;
+        vertical-align: middle;
+        color: #888;
+      }
+      dl.attributes dt {
+        float: left;
+        width: 100px;
+      }
+      dl.attributes dd {
+        margin-left: 100px;
+      }
+      .product-image img {
+        max-width: 100%;
+        max-height: 160px;
+      }
+    </style>
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+
+      <h1>Chrome OS Code Names</h1>
+
+      <p>
+        Disclaimer: This list is unofficial and may contain errors.
+      </p>
+
+      <form class="form-inline">
+        <div class="form-group">
+          <input id="query" type="text" class="form-control" placeholder="Search...">
+        </div>
+      </form>
+
+      <hr>
+
+      <div class="row">
+
+        {% for device in devices %}
+        <div class="device col-md-6" data-text="{{ device['Code name'] }}@{{ device['OEM'] }}@{{ device['Model'] }}" id="{{ device['Code name'] }}">
+          <h3><a href="#{{ device['Code name'] }}" class="title-link">{{ device['Code name'] }} <small>{{ device['Model'] or device['OEM'] }}</small></h3>
+          <div class="row">
+            <div class="col-sm-6 thumbnail-container">
+              <div class="thumbnail product-image">
+                {% if device['Image Available'] and device['ASIN'] %}
+                <a target="_blank" href="https://www.amazon.com/gp/product/{{ device['ASIN'] }}/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN={{ device['ASIN'] }}&linkCode=as2&tag=minnie010-20&linkId=c84223ad6eda87f148de739316556341"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN={{ device['ASIN'] }}&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=minnie010-20" ></a>
+                <img src="//ir-na.amazon-adsystem.com/e/ir?t=minnie010-20&l=am2&o=1&a={{ device['ASIN'] }}" style="position: absolute">
+                {% else %}
+                <div class="placeholder">
+                  Photo Unavailable
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <dl class="attributes">
+                <dt>Release</dt><dd>{{ device['Release'] }}</dd>
+                <dt>Board</dt>
+                <dd>
+                  {% for b in device['Board name(s)'].split('&') %}
+                  {{ b }}
+                  {% if not loop.last %}<br>{% endif %}
+                  {% endfor %}
+                </dd>
+                <dt>Base Board</dt><dd>{{ device['Base board'] or '-' }}</dd>
+                <dt>Platform</dt><dd>{{ device['Platform'] }}</dd>
+                <dt>Kernel</dt><dd>{{ device['Kernel'] }}</dd>
+                <dt>User ABI</dt><dd>{{ device['User ABI'] }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+      var $query = $('#query');
+      $query.on('change keyup paste', function() {
+        var query = $query.val().toLowerCase();
+        $('.device').each(function() {
+          var $device = $(this);
+          var found = $device.data('text').toLowerCase().indexOf(query) >= 0;
+          if (found) {
+            $device.show();
+          } else {
+            $device.hide();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
